@@ -99,21 +99,21 @@ WHERE
         AND Split.individual_power = s2.individual_power
     );
 
---6. Rank (can use either RANK() or ROWNUMBER()) movies based on the average height of characters in descending order.
+--6. Rank (can use either RANK() or ROWNUMBER()) movies based on the height of characters in descending order.
 SELECT character_name, 
-       AVG(height_cm) AS Average_height,
-	   RANK() OVER(PARTITION BY character_name ORDER BY AVG(height_cm) DESC) AS height_rank
+       height_cm AS Height,
+	   RANK() OVER(PARTITION BY character_name ORDER BY height_cm DESC) AS height_rank
 FROM ghibli
-GROUP BY character_name
+GROUP BY character_name, height_cm
 ORDER BY 2 DESC;
 
 --OR
 
 SELECT character_name, 
-       AVG(height_cm) AS Average_height,
-	   ROW_NUMBER() OVER(ORDER BY AVG(height_cm) DESC) AS height_rank
+       height_cm AS Height,
+	   ROW_NUMBER() OVER(ORDER BY height_cm DESC) AS height_rank
 FROM ghibli
-GROUP BY character_name
+GROUP BY character_name, height_cm
 ORDER BY 2 DESC;
 
 --7. Find characters who have appeared in movies released after year 200 and have a height above the average height of characters in their respective movies.
